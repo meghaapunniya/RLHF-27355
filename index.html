@@ -110,6 +110,15 @@
         
         }
 
+        #next-practice-item{
+            padding: 5px 10px;
+            background-color: goldenrod;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
         #item-details button{
             padding: 5px 10px;
             background-color: grey;
@@ -362,10 +371,10 @@
         playPauseBtn.addEventListener('click', () => {
             if (videoPlayer.paused) {
                 videoPlayer.play();
-                playPauseBtn.innerHTML = '<p>pause</p>';
+                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
             } else {
                 videoPlayer.pause();
-                playPauseBtn.innerHTML = '<p>play</p>';
+                playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
             }
         });
 
