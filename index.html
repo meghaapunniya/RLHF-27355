@@ -1,57 +1,425 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dance Routine Widget</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 20px;
-      }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
 
-      h1 {
-        text-align: center;
-        color: #333;
-      }
+        .widget {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
 
-      .links-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-      }
+        .tabs {
+            display: flex;
+            background-color: #f0f0f0;
+        }
 
-      a {
-        text-decoration: none;
-        color: #007bff;
-        font-size: 18px;
-        padding: 10px;
-        border-radius: 5px;
-        transition: background-color 0.3s, color 0.3s;
-        border: 1px solid transparent;
-      }
+        .tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
 
-      a:hover {
-        background-color: #007bff;
-        color: white;
-        border-color: #007bff;
-      }
+        .tab.active {
+            background-color: #fff;
+            font-weight: bold;
+        }
 
-      a:visited {
-        color: #0056b3;
-      }
+        .content {
+            padding: 20px;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .control-btn {
+            margin: 0 5px;
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .nav-btn {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #practice-btn {           
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #practice-btn {           
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        
+        }
+
+        #item-details button{
+            padding: 5px 10px;
+            background-color: grey;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .search-container {
+            margin-top: 20px;
+        }
+
+        #search {
+            width: 97%;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .routine {
+            margin-top: 20px;
+        }
+
+        .routine-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #f0f0f0;
+            margin-bottom: 5px;
+            border-radius: 5px;
+        }
+
+        .practice-mode {
+            margin-top: 20px;
+        }
     </style>
-  </head>
-  <body>
-    <h1>Turn Links</h1>
-    <div class="links-container">
-      <a href="/1a.html">Turn 1: Model A</a>
-      <a href="/1b.html">Turn 1: Model B</a>
-      <a href="/1IR.html">Turn 1: Ideal Response</a>
+</head>
+
+<body>
+    <div class="widget">
+        <div class="tabs">
+            <div class="tab active" data-tab="choreographies">Choreographies</div>
+            <div class="tab" data-tab="styles">Dance Styles</div>
+            <div class="tab" data-tab="moves">Dance Moves</div>
+        </div>
+        <div class="content">
+            <div class="video-container">
+                <video id="video-player" width="760" height="315" src="" controls  allowfullscreen></video>
+            </div>
+            <div class="controls">
+                <button class="control-btn" id="play-pause"><i class="fas fa-play"></i></button>
+                <button class="control-btn" id="rewind"><i class="fas fa-backward"></i></button>
+                <select id="playback-speed">
+                    <option value="0.5">0.5x</option>
+                    <option value="1" selected>1x</option>
+                    <option value="1.5">1.5x</option>
+                    <option value="2">2x</option>
+                </select>
+            </div>
+            <div id="item-details"></div>
+            <div class="navigation">
+                <button class="nav-btn" id="prev"><i class="fas fa-chevron-left"></i> Previous</button>
+                <button class="nav-btn" id="next">Next <i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="search-container">
+                <input type="text" id="search" placeholder="Search for choreographies, styles, or moves...">
+            </div>
+            <div class="routine">
+                <h3>My Dance Routine</h3>
+                <div id="routine-items"></div>
+                <button id="practice-btn">Start Practice Mode</button>
+            </div>
+            <div class="practice-mode" style="display: none;">
+                <h3>Practice Mode</h3>
+                <div id="practice-item"></div>
+                <button id="next-practice-item">Next Item</button>
+                <p>Total Practice Duration: <span id="total-duration">0</span> minutes</p>
+            </div>
+        </div>
     </div>
-  </body>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+    <script>
+        // Data arrays
+        const choreographies = [
+            { title: "Bollywood Blast", instructions: "Learn energetic Bollywood moves", videoLink: "https://media.istockphoto.com/id/1054442020/video/a-slow-motion-shot-of-a-traditional-pretty-woman-in-colorful-cloths-or-attire-dancing-on.mp4?s=mp4-640x640-is&k=20&c=BZV4SmCCjCqHVedyKrkyTWHq18-WW9EZXyHno95wYv0=" },
+            { title: "Salsa Sizzle", instructions: "Master the basics of salsa", videoLink: "https://media.istockphoto.com/id/1291426228/video/african-american-dancers-dancing-outdoors-couple-moving-in-latino-dance-in-city.mp4?s=mp4-640x640-is&k=20&c=FVIGc7wMTC_anshFS7hTcGkw3eO0b9DeJsKNzzvbwsU=" },
+            { title: "Hip Hop Groove", instructions: "Get into the hip hop rhythm", videoLink: "https://media.istockphoto.com/id/1466467278/video/young-woman-breakdancing-during-street-party-with-her-friends-outdoors.mp4?s=mp4-640x640-is&k=20&c=1wK8iTar8a71IbhINLFxUWFDBAvWC50WZHDUM52zcvk=" },
+            { title: "K-pop Craze", instructions: "Learn popular K-pop dance routines", videoLink: "https://media.istockphoto.com/id/1586245073/video/students-at-dance-art-schools-learn-how-to-dance.mp4?s=mp4-640x640-is&k=20&c=MT-IDLhagroqe7QVk3i6uJaVf0RIQ3fWPqOVzDQPhLA=" },
+            { title: "Jazz Fusion", instructions: "Combine jazz and modern dance styles", videoLink: "https://media.istockphoto.com/id/2061510989/video/women-wearing-black-dancing-together-in-a-studio.mp4?s=mp4-640x640-is&k=20&c=FquO9htsWCZXkrRXNF_PEoLFZm8TlpU_oa8TXchyebk=" },
+            { title: "Latin Pop", instructions: "Move to the beats of Latin pop music", videoLink: "https://media.istockphoto.com/id/2163793972/video/cheerful-brunette-woman-dancing-cuban-salsa-in-a-park.mp4?s=mp4-640x640-is&k=20&c=yMHVxkiNxRrPT2chXdLTr0w0LZnhel7PccyRm-tM7Mk=" }
+        ];
+
+        const danceStyles = [
+            { title: "Ballet", instructions: "Learn graceful ballet techniques", videoLink: "https://media.istockphoto.com/id/1323359016/video/super-professional-ballerina-throws-the-dust-out-of-her-hand-while-spinning-on-the-stage.mp4?s=mp4-640x640-is&k=20&c=0qFLuQeKTuRhtTahMBt9vq6TI3S2OdIW0C7ZDvM9jic=" },
+            { title: "Contemporary", instructions: "Explore fluid contemporary movements", videoLink: "https://media.istockphoto.com/id/1471726370/video/professional-dancer-practicing-contemporary-dance-routine-in-ballet-studio.mp4?s=mp4-640x640-is&k=20&c=WP6UM7teX98EXtYdVyF1UjdcI7lkInKGsa_pvIXvX7A=" },
+            { title: "Tap Dance", instructions: "Master rhythmic tap dance steps", videoLink: "https://media.istockphoto.com/id/1321613332/video/low-section-asian-chinese-young-girl-practicing-tap-dancing-in-dance-studio.mp4?s=mp4-640x640-is&k=20&c=uuCDlVF874eKCbH4PInA-TBcrJXb-zHeIco0eoA3F7I=" },
+            { title: "Breakdancing", instructions: "Learn impressive breakdancing moves", videoLink: "https://media.istockphoto.com/id/1278398498/video/two-dancers-dancing-in-urban-downtown-city.mp4?s=mp4-640x640-is&k=20&c=V80uuGaUXHnkHy5cofrNViKaD23LWChGZW8d69pRKmU=" },
+            { title: "Ballroom", instructions: "Practice elegant ballroom dance styles", videoLink: "https://media.istockphoto.com/id/1255457046/video/woman-and-man-doing-professional-movements-while-dancing-tango-in-smoky-ballroom.mp4?s=mp4-640x640-is&k=20&c=E6FuE-BnyOpZZmKj03-qTdkjOdL4vWpK3aIaht_1J2I=" },
+            { title: "Flamenco", instructions: "Master passionate flamenco techniques", videoLink: "https://media.istockphoto.com/id/1307621014/video/brunette-in-long-red-dress-dancing-passionate-flamenco-dance-against-background-of-yellow.mp4?s=mp4-640x640-is&k=20&c=6-SMuF2MCWls_xd-tryAlPQi7Vej9eLR-5c9Anl2PHo=" }
+        ];
+
+        const danceMoves = {
+            beginner: [
+                { title: "Basic Step", instructions: "Learn the fundamental dance step", videoLink: "https://media.istockphoto.com/id/813045094/video/time-for-a-dance-break.mp4?s=mp4-640x640-is&k=20&c=ZYMiY3Jm-hTH4W9oPfByF7iYztl7AHtEX78c-yL1_3g=" },
+                { title: "Grapevine", instructions: "Master the grapevine step", videoLink: "https://media.istockphoto.com/id/1329370878/video/attractive-young-woman-having-fun-in-white-dress-celebrating-dancing-barefoot-in-slow-motion.mp4?s=mp4-640x640-is&k=20&c=Qt3jvDtTwTJKipx6Xx_cmUUUlJeOUNCqh8ovzKuPRbo=" },
+                { title: "Box Step", instructions: "Practice the box step pattern", videoLink: "https://media.istockphoto.com/id/1753364375/video/shoes-and-feet-of-a-couple-woman-and-man-dancing-doing-choreography-steps-with-latin-music.mp4?s=mp4-640x640-is&k=20&c=w9hG5dVCZV8y6au28Otc-jX_sR15fhEKrblcQrW0vh8=" },
+                { title: "Cha-Cha Basic", instructions: "Learn the basic cha-cha step", videoLink: "https://media.istockphoto.com/id/1135959156/video/footage-caucasian-beautiful-woman-is-dancing-in-public-place-alone-happy-and-inspired-city.mp4?s=mp4-640x640-is&k=20&c=RmW7J1bObmS1z6dxUN6fHZpBC55w9O9I0xg98reVrQM=" },
+                { title: "Hip Sway", instructions: "Master the hip sway technique", videoLink: "https://media.istockphoto.com/id/2045446628/video/young-woman-shaking-her-hips-in-front-of-a-decorated-christmas-tree-with-a-flashing-garland.mp4?s=mp4-640x640-is&k=20&c=xHfp-U3W1cJI6WEH_cDEgTNDEU-nI1w5acebzfNZtrg=" },
+                { title: "Shimmy", instructions: "Practice the shimmy movement", videoLink: "https://media.istockphoto.com/id/2162233318/video/a-woman-in-blue-jeans-and-a-blue-top-is-dancing-on-a-white-surface.mp4?s=mp4-640x640-is&k=20&c=f7toRugjS6T89cwx6EmYFM5S26moBmxpGTJGeAVD_VE=" }
+            ],
+            intermediate: [
+                { title: "Pirouette", instructions: "Learn to perform a basic pirouette", videoLink: "https://media.istockphoto.com/id/813045094/video/time-for-a-dance-break.mp4?s=mp4-640x640-is&k=20&c=ZYMiY3Jm-hTH4W9oPfByF7iYztl7AHtEX78c-yL1_3g=" },
+                { title: "Body Roll", instructions: "Master the smooth body roll", videoLink:  "https://media.istockphoto.com/id/1329370878/video/attractive-young-woman-having-fun-in-white-dress-celebrating-dancing-barefoot-in-slow-motion.mp4?s=mp4-640x640-is&k=20&c=Qt3jvDtTwTJKipx6Xx_cmUUUlJeOUNCqh8ovzKuPRbo=" },
+                { title: "Moonwalk", instructions: "Practice the iconic moonwalk", videoLink: "https://media.istockphoto.com/id/1753364375/video/shoes-and-feet-of-a-couple-woman-and-man-dancing-doing-choreography-steps-with-latin-music.mp4?s=mp4-640x640-is&k=20&c=w9hG5dVCZV8y6au28Otc-jX_sR15fhEKrblcQrW0vh8=" },
+                { title: "Jazz Square", instructions: "Learn the jazz square combination", videoLink:  "https://media.istockphoto.com/id/1135959156/video/footage-caucasian-beautiful-woman-is-dancing-in-public-place-alone-happy-and-inspired-city.mp4?s=mp4-640x640-is&k=20&c=RmW7J1bObmS1z6dxUN6fHZpBC55w9O9I0xg98reVrQM=" },
+                { title: "Pas de Bourrée", instructions: "Master the pas de bourrée step", videoLink:"https://media.istockphoto.com/id/1307621014/video/brunette-in-long-red-dress-dancing-passionate-flamenco-dance-against-background-of-yellow.mp4?s=mp4-640x640-is&k=20&c=6-SMuF2MCWls_xd-tryAlPQi7Vej9eLR-5c9Anl2PHo=" },
+                { title: "Fouetté Turn", instructions: "Practice the fouetté turn technique", videoLink: "https://media.istockphoto.com/id/1278398498/video/two-dancers-dancing-in-urban-downtown-city.mp4?s=mp4-640x640-is&k=20&c=V80uuGaUXHnkHy5cofrNViKaD23LWChGZW8d69pRKmU=" }
+            ],
+            advanced: [
+                { title: "Grand Jeté", instructions: "Learn to perform a grand jeté leap", videoLink: "https://media.istockphoto.com/id/1466467278/video/young-woman-breakdancing-during-street-party-with-her-friends-outdoors.mp4?s=mp4-640x640-is&k=20&c=1wK8iTar8a71IbhINLFxUWFDBAvWC50WZHDUM52zcvk=" },
+                { title: "Windmill", instructions: "Master the breakdancing windmill move", videoLink: "https://media.istockphoto.com/id/813045094/video/time-for-a-dance-break.mp4?s=mp4-640x640-is&k=20&c=ZYMiY3Jm-hTH4W9oPfByF7iYztl7AHtEX78c-yL1_3g=" },
+                { title: "Toe Stand", instructions: "Practice the challenging toe stand", videoLink: "https://media.istockphoto.com/id/1329370878/video/attractive-young-woman-having-fun-in-white-dress-celebrating-dancing-barefoot-in-slow-motion.mp4?s=mp4-640x640-is&k=20&c=Qt3jvDtTwTJKipx6Xx_cmUUUlJeOUNCqh8ovzKuPRbo=" },
+                { title: "Barrel Turn", instructions: "Learn the dynamic barrel turn", videoLink: "https://media.istockphoto.com/id/1135959156/video/footage-caucasian-beautiful-woman-is-dancing-in-public-place-alone-happy-and-inspired-city.mp4?s=mp4-640x640-is&k=20&c=RmW7J1bObmS1z6dxUN6fHZpBC55w9O9I0xg98reVrQM="},
+                { title: "Aerial Cartwheel", instructions: "Master the aerial cartwheel technique", videoLink: "https://media.istockphoto.com/id/1307621014/video/brunette-in-long-red-dress-dancing-passionate-flamenco-dance-against-background-of-yellow.mp4?s=mp4-640x640-is&k=20&c=6-SMuF2MCWls_xd-tryAlPQi7Vej9eLR-5c9Anl2PHo=" },
+                { title: "Fouetté en Tournant", instructions: "Practice multiple fouetté turns", videoLink: "https://media.istockphoto.com/id/1278398498/video/two-dancers-dancing-in-urban-downtown-city.mp4?s=mp4-640x640-is&k=20&c=V80uuGaUXHnkHy5cofrNViKaD23LWChGZW8d69pRKmU=" }
+            ]
+        };
+
+        // Variables
+        let currentTab = "choreographies";
+        let currentIndex = 0;
+        let currentArray = choreographies;
+        const routine = [];
+
+        // DOM elements
+        const tabs = document.querySelectorAll('.tab');
+        const itemDetails = document.getElementById('item-details');
+        const videoPlayer = document.getElementById('video-player');
+        const youtubeIframeContainer = videoPlayer.closest('.video-container');
+        const playPauseBtn = document.getElementById('play-pause');
+        const rewindBtn = document.getElementById('rewind');
+        const playbackSpeed = document.getElementById('playback-speed');
+        const prevBtn = document.getElementById('prev');
+        const nextBtn = document.getElementById('next');
+        const searchInput = document.getElementById('search');
+        const routineItems = document.getElementById('routine-items');
+        const practiceBtn = document.getElementById('practice-btn');
+        const practiceMode = document.querySelector('.practice-mode');
+        const practiceItem = document.getElementById('practice-item');
+        const nextPracticeItemBtn = document.getElementById('next-practice-item');
+        const totalDuration = document.getElementById('total-duration');
+
+
+        videoPlayer.addEventListener('focus', () => {
+            youtubeIframeContainer.ariaHidden = true; // Set the inert attribute
+        });
+
+        // Remove the inert attribute when the iframe loses focus
+        videoPlayer.addEventListener('blur', () => {
+            youtubeIframeContainer.ariaHidden = false; // Remove the inert attribute
+        });
+
+
+        // Functions
+        function updateContent() {
+            const item = currentArray[currentIndex];
+            itemDetails.innerHTML = `
+                <h2>${item.title}</h2>
+                <p>${item.instructions}</p>
+                <button onclick="addToRoutine('${item.title}')">Add to Routine</button>
+            `;
+            videoPlayer.src = item.videoLink;
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            currentIndex = 0;
+            tabs.forEach(t => t.classList.remove('active'));
+            document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+
+            switch (tab) {
+                case 'choreographies':
+                    currentArray = choreographies;
+                    break;
+                case 'styles':
+                    currentArray = danceStyles;
+                    break;
+                case 'moves':
+                    currentArray = [...danceMoves.beginner, ...danceMoves.intermediate, ...danceMoves.advanced];
+                    break;
+            }
+
+            updateContent();
+        }
+
+        function addToRoutine(title) {
+            const duration = prompt(`Enter practice duration for "${title}" in minutes:`, "5");
+            if (duration !== null) {
+                routine.push({ title, duration: parseInt(duration) });
+                updateRoutineDisplay();
+            }
+        }
+
+        function updateRoutineDisplay() {
+            routineItems.innerHTML = routine.map((item, index) => `
+                <div class="routine-item" data-id="${index}">
+                    <span>${item.title} (${item.duration} min)</span>
+                    <button onclick="removeFromRoutine(${index})">Remove</button>
+                </div>
+            `).join('');
+
+            totalDuration.textContent = routine.reduce((sum, item) => sum + parseInt(item.duration), 0);
+        }
+
+        function removeFromRoutine(index) {
+            routine.splice(index, 1);
+            updateRoutineDisplay();
+        }
+
+        function startPracticeMode() {
+            if (routine.length === 0) {
+                alert("Please add items to your routine before starting practice mode.");
+                return;
+            }
+            practiceMode.style.display = 'block';
+            currentPracticeIndex = 0;
+            showPracticeItem();
+        }
+
+        function showPracticeItem() {
+            if (currentPracticeIndex >= routine.length) {
+                alert("Practice session completed!");
+                practiceMode.style.display = 'none';
+                return;
+            }
+            const item = routine[currentPracticeIndex];
+            practiceItem.innerHTML = `
+                <h4>${item.title}</h4>
+                <p>Practice for ${item.duration} minutes</p>
+            `;
+        }
+
+        // Event Listeners
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+        });
+
+        playPauseBtn.addEventListener('click', () => {
+            if (videoPlayer.paused) {
+                videoPlayer.play();
+                playPauseBtn.innerHTML = '<p>pause</p>';
+            } else {
+                videoPlayer.pause();
+                playPauseBtn.innerHTML = '<p>play</p>';
+            }
+        });
+
+        rewindBtn.addEventListener('click', () => {
+            videoPlayer.currentTime -= 10;
+        });
+
+        playbackSpeed.addEventListener('change', () => {
+            videoPlayer.playbackRate = parseFloat(playbackSpeed.value);
+        });
+
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + currentArray.length) % currentArray.length;
+            updateContent();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % currentArray.length;
+            updateContent();
+        });
+
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const allItems = [...choreographies, ...danceStyles, ...danceMoves.beginner, ...danceMoves.intermediate, ...danceMoves.advanced];
+            const filteredItems = allItems.filter(item => item.title.toLowerCase().includes(searchTerm));
+
+            if (filteredItems.length > 0) {
+                currentArray = filteredItems;
+                currentIndex = 0;
+                updateContent();
+            }
+        });
+
+        practiceBtn.addEventListener('click', startPracticeMode);
+
+        nextPracticeItemBtn.addEventListener('click', () => {
+            currentPracticeIndex++;
+            showPracticeItem();
+        });
+
+        // Initialize Sortable for routine items
+        new Sortable(routineItems, {
+            animation: 150,
+            ghostClass: 'sortable-ghost',
+            onEnd: () => {
+                const newOrder = Array.from(routineItems.children).map(item => routine[item.dataset.id]);
+                routine.splice(0, routine.length, ...newOrder);
+                updateRoutineDisplay();
+            }
+        });
+
+        // Initial content update
+        updateContent();
+    </script>
+</body>
+
 </html>
